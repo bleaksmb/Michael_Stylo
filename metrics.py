@@ -49,8 +49,6 @@ def quotePercentage(data, wordCount):
             if word[-1] != ")":
                 qLen += int(word[6:-2])
             else:
-                # note: this can be hardcoded due to the common format of
-                # quotes
                 qLen += int(word[6:-1])
     return qLen / wordCount
 
@@ -121,7 +119,6 @@ def contractionCount(data):
 
 
 def csvCreation(wordLim, files, folder):
-    # wordLim = 250
     ret = []
     values = []
     dFile = []
@@ -159,25 +156,13 @@ def csvCreation(wordLim, files, folder):
             cCount = contractionCount(d[lower:upper])
             avgWordLength = sum((len(x[0] * x[1]) for x in wCount)) / wordLim
             if yuleK > 0 and sLen > 0:
-                # values.append([yuleK,yuleI,r2V,r2,punc,sLen,avgWordLength,cCount])
                 values.append([yuleK, yuleI, r2V, r2, qPen,
                                punc, sLen, avgWordLength, cCount])
             if end:
                 break
         f.close()
-        #dFile.append(file)
         if values:
             ret.append(values)
-        for val in values:
-            dFile.append(val)
-        values = []
-
-        # df = pd.DataFrame(values, columns=[
-        #                "YulesK", "YulesI", "Zipfs1", "Zipfs2", "Punc", "Sentence", "WordLen", "Contraction Usage"])
-        # df = pd.DataFrame(dFile, columns=["YulesK", "YulesI", "Zipfs1", "Zipfs2",
-        #                                "Quote", "Punc", "Sentence", "WordLen", "Contraction Usage"])
-        # df.to_csv(folder + str(file)+".csv", index=False, header=False)
-    #print(dFile)
     return ret
 
 

@@ -17,7 +17,6 @@ def files():
     root = Tk()
     root.withdraw()
     folder = filedialog.askdirectory()
-    # folder = "C:/Users/Michael Bleakley/Desktop/Uni/2020/Thesis/AuthorRecognition/Data for Tests/Test Data 5"
     files = os.listdir(folder)
     documents = []
     for file in files:
@@ -37,14 +36,14 @@ def opening(path):
             sys.exit(1)
     except:
         if isEmpty:
-            print("Document", path, "is either blank or all images, contact author for new copy")
+            print("Document", path,
+                  "is either blank or all images, contact author for new copy")
         else:
             print("Document", path, "Cannot be Read, Save it as a .docx")
         sys.exit(1)
     file = re.split(rb'[\s\n\r]\s*', file)
     count = 0
     for elem in file:
-        # table of contents returns an error
         if (b"references" in elem.lower() or b"biliography" in elem.lower()) and count > 500:
             break
         else:
@@ -71,7 +70,6 @@ def createTxt():
 
         if ".pdf" in doc or ".doc" in doc or ".docx" in doc or ".odt" in doc:
             f = opening(folder + "/" + doc)
-            # print(f)
             if f:
                 newFile = decoding(f)
                 save(folder + "/" + doc[:doc.find(".")], newFile)
