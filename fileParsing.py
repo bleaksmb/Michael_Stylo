@@ -44,6 +44,7 @@ def opening(path):
     file = re.split(rb'[\s\n\r]\s*', file)
     count = 0
     for elem in file:
+        # table of contents returns an error
         if (b"references" in elem.lower() or b"biliography" in elem.lower()) and count > 500:
             break
         else:
@@ -70,6 +71,7 @@ def createTxt():
 
         if ".pdf" in doc or ".doc" in doc or ".docx" in doc or ".odt" in doc:
             f = opening(folder + "/" + doc)
+            # print(f)
             if f:
                 newFile = decoding(f)
                 save(folder + "/" + doc[:doc.find(".")], newFile)

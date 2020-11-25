@@ -49,6 +49,8 @@ def quotePercentage(data, wordCount):
             if word[-1] != ")":
                 qLen += int(word[6:-2])
             else:
+                # note: this can be hardcoded due to the common format of
+                # quotes
                 qLen += int(word[6:-1])
     return qLen / wordCount
 
@@ -119,6 +121,7 @@ def contractionCount(data):
 
 
 def csvCreation(wordLim, files, folder):
+    # wordLim = 250
     ret = []
     values = []
     dFile = []
@@ -161,8 +164,12 @@ def csvCreation(wordLim, files, folder):
             if end:
                 break
         f.close()
+        # dFile.append(file)
         if values:
             ret.append(values)
+        for val in values:
+            dFile.append(val)
+        values = []
     return ret
 
 

@@ -24,8 +24,11 @@ def dataAccess():
     for f in files:
         if ".txt" in f:
             documents.append(f)
+    #numWords = preRun(documents,folder)
     numWords = lenCheck(folder, documents)
+    print(numWords)
     values = csvCreation(numWords, documents, folder)
+    #documents.sort(key=lambda f: int(re.sub('\D', '', f)))
     values = np.asarray(values)
     return values, documents
 
@@ -83,6 +86,7 @@ def runModelTests(tests, data, documents):
     for i in range(0, len(data)):
         r = Parallel(n_jobs=num_cores)(delayed(runSimulation)
                                        (data, documents, i)for j in range(0, tests))
+        # for j in range(0, tests):
         m = []
         for tup in r:
             m.append(tup[2])
@@ -103,8 +107,6 @@ def predictResult(results):
         return "Run Another Simulation to be Sure of Authorship - Currently All Written by the Same Author"
     else:
         return "All Documents Are written by the Same Author"
-
-# currently not applied. This is a pre-run to calculate chunk size, ended up not being accurate enough and subsitited for a distribution
 
 
 def preRun(documents, folder):
@@ -132,8 +134,9 @@ def runWordNumTest(data, documents, num):
     val = model.predict(testX)
     mins.append(np.min(val))
     maxs.append(np.max(val))
-    print((np.max(val) - np.min(val)))
     return ((np.max(val) - np.min(val)))
+
+# Main 2, recoded for word len checks
 
 
 def runSimulation(data, documents, num):
@@ -153,8 +156,6 @@ def runSimulation(data, documents, num):
 
 
 if __name__ == "__main__":
-    import warnings
-    warnings.filterwarnings("ignore")
     a = time.time()
     rTot = []
     data, documents = dataAccess()
@@ -163,19 +164,25 @@ if __name__ == "__main__":
     medians = []
     for doc in documents:
         medians.append([])
-    for i in range(0, 10):
-        print("Rotataion", i+1)
+    for i in range(0, 20):
         results = runModelTests(5, data, documents)
         r.append(results)
         for i in range(0, len(results)):
             for j in range(0, len(results[i][2])):
                 medians[i].append(results[i][2][j])
-    # pprint(r)
     print("\n\n\nTOTAL MEDIANS\n\n\n")
     for i in range(0, len(documents)):
         print(documents[i], np.median(medians[i]))
         v.append((documents[i], np.median(medians[i])))
     rTot.append(v)
     b = time.time()
+    print("All Results")
+    # f = open("Metric test 1.txt", "a+")
+    # for row in v:
+    #     f.write(' '.join(str(s) for s in row) + ", ")
+    #     pprint(row)
+    #     f.write("\n")
+    # f.write(str(predictResult(v))+ "\n")
+    # f.close()
     print(predictResult(v))
     print(str((b - a) / 60))
