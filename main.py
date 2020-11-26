@@ -1,3 +1,4 @@
+# Copyright 2020 Michael Bleakley
 from joblib import Parallel, delayed
 import multiprocessing
 import json
@@ -24,11 +25,8 @@ def dataAccess():
     for f in files:
         if ".txt" in f:
             documents.append(f)
-    #numWords = preRun(documents,folder)
     numWords = lenCheck(folder, documents)
-    print(numWords)
     values = csvCreation(numWords, documents, folder)
-    #documents.sort(key=lambda f: int(re.sub('\D', '', f)))
     values = np.asarray(values)
     return values, documents
 

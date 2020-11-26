@@ -1,3 +1,4 @@
+# Copyright 2020 Michael Bleakley
 import textract
 import re
 import os

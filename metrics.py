@@ -1,3 +1,4 @@
+# Copyright 2020 Michael Bleakley
 import operator
 import math
 import numpy as np
