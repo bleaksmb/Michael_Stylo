@@ -11,6 +11,7 @@ class Documents:
         self.documents = documents
 
 
+# loads in all files from folder that are "text files"
 def files():
     from tkinter import filedialog
     from tkinter import Tk
@@ -24,6 +25,10 @@ def files():
         if ".pdf" in file or ".docx" in file or ".doc" in file or ".odt" in file:
             documents.append(file)
     return documents, folder
+
+# opens all files, returns and error if a file is unopenable, blank or has
+# some other error. This fucntion also "preprocesses" the data to get rid
+# of references
 
 
 def opening(path):
@@ -54,6 +59,9 @@ def opening(path):
         file = file[:count]
     return file
 
+# saves the documents as .txt for simple reading with python native file
+# reading
+
 
 def save(fname, newFile):
     f = open(fname + ".txt", "w")
@@ -63,6 +71,8 @@ def save(fname, newFile):
         except:
             pass
     f.close()
+
+# sets up save parameters for the save function
 
 
 def createTxt():
@@ -82,6 +92,10 @@ def createTxt():
     return folder
 
 
+# This is veryt important. This method gets rid of quotes as well as
+# minuses and decimal places. This function developes cleaner pieces of
+# text to make the running of the program more smooth. This is explained
+# in depth in associated paper
 def decoding(file):
     newFile = []
     a = []
@@ -113,6 +127,8 @@ def decoding(file):
             if not file[i].decode().replace('.', '').replace('-', '').isnumeric():
                 newFile.append(file[i].decode())
     return newFile
+
+# uses distrution explained in paper to return the required 'chunk size'
 
 
 def lenCheck(folder, documents):

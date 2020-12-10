@@ -1,4 +1,9 @@
 # Copyright 2020 Michael Bleakley
+# Goals
+# The overall goal of this program is to identify when author's misrepresent themselves for gain
+# primarily, this is to catch ghostwriting from students/academics in relevant insitutions
+# The main datastructures applied in this program are numpy arrays which
+# are used with calculations/ ai models to identify authorship
 from joblib import Parallel, delayed
 import multiprocessing
 import json
@@ -6,7 +11,6 @@ import csv
 import time
 import re
 from random import choice
-from pprint import pprint
 from fileParsing import *
 from metrics import *
 from tensorflow.keras import backend as K
@@ -18,6 +22,7 @@ import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 
+# creates an os window for user to choose directory of files
 def dataAccess():
     folder = createTxt()
     files = os.listdir(folder)
@@ -29,6 +34,9 @@ def dataAccess():
     values = csvCreation(numWords, documents, folder)
     values = np.asarray(values)
     return values, documents
+
+# creates and fits the model to be used with identification of authors
+# inputs 2x numpy arrays of trainig data
 
 
 def modelCreation(trainX, trainY):
@@ -44,10 +52,8 @@ def modelCreation(trainX, trainY):
     return model
 
 
-def statiscalResult():
-    return
-
-
+# prepares data and splits it into train and test data for both x (values)
+# and y(expected result)
 def dataPreperation(notDoc, data):
     np.random.seed(int(time.time()))
     d = np.empty((0, len(data[0][0]) + 1))
@@ -78,6 +84,8 @@ def dataPreperation(notDoc, data):
     return trainX, trainY, testX, testY
 
 
+# Main method that performs the tests and returns the numerical values as
+# results
 def runModelTests(tests, data, documents):
     results = []
     num_cores = multiprocessing.cpu_count()
@@ -91,6 +99,8 @@ def runModelTests(tests, data, documents):
 
         results.append((documents[i], np.median(m), m))
     return results
+
+# returns a final prediction based on the results (legitimacy of author)
 
 
 def predictResult(results):
@@ -106,6 +116,8 @@ def predictResult(results):
     else:
         return "All Documents Are written by the Same Author"
 
+# *NOT IN USE* - solves for the minimum chunk size required, testing resulted in this being less consistent than the distribution described in accompanying paper
+
 
 def preRun(documents, folder):
     stored = []
@@ -119,6 +131,8 @@ def preRun(documents, folder):
             check.append(r)
         stored.append(np.max(check))
     return 250 + stored.index(np.max(stored)) * 50
+
+# *NOT IN USE* - Runs relevant data preperation and creates a new model. This model is then tests and the max difference is returned
 
 
 def runWordNumTest(data, documents, num):
@@ -134,7 +148,8 @@ def runWordNumTest(data, documents, num):
     maxs.append(np.max(val))
     return ((np.max(val) - np.min(val)))
 
-# Main 2, recoded for word len checks
+# Main Simulation, Preps a new set of data, makes a new model and returns
+# the values of the results for prediction
 
 
 def runSimulation(data, documents, num):
@@ -152,6 +167,11 @@ def runSimulation(data, documents, num):
     maxs.append(np.max(val))
     return (documents[num], np.median(med), med)
 
+
+# Main funtion: Runs the Full Process in the Following Steps
+# 1. access document and setup lists for results
+# 2. Run the tests for i number of times as per the first loop (in this case 20)
+# 3. takes the results and returns the predcition of authorship
 
 if __name__ == "__main__":
     a = time.time()
@@ -175,12 +195,5 @@ if __name__ == "__main__":
     rTot.append(v)
     b = time.time()
     print("All Results")
-    # f = open("Metric test 1.txt", "a+")
-    # for row in v:
-    #     f.write(' '.join(str(s) for s in row) + ", ")
-    #     pprint(row)
-    #     f.write("\n")
-    # f.write(str(predictResult(v))+ "\n")
-    # f.close()
     print(predictResult(v))
     print(str((b - a) / 60))
