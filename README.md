@@ -1,5 +1,5 @@
 # Michael_Stylo
-Program for detecing of Authorship using stylometry
+Program for detecing of Authorship using stylometry. For futher explanation of various aspects as well as development of program read the associated paper
 
 ### Requirements
 This program requires a windows PC running python 3.8 or above
