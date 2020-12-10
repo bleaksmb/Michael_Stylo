@@ -129,8 +129,6 @@ def decoding(file):
     return newFile
 
 # uses distrution explained in paper to return the required 'chunk size'
-
-
 def lenCheck(folder, documents):
     minLength = None
     for doc in documents:

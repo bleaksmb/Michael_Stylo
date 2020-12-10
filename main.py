@@ -2,8 +2,7 @@
 # Goals
 # The overall goal of this program is to identify when author's misrepresent themselves for gain
 # primarily, this is to catch ghostwriting from students/academics in relevant insitutions
-# The main datastructures applied in this program are numpy arrays which
-# are used with calculations/ ai models to identify authorship
+# The main datastructures applied in this program are numpy arrays which are used with calculations/ ai models to identify authorship
 from joblib import Parallel, delayed
 import multiprocessing
 import json
@@ -35,10 +34,8 @@ def dataAccess():
     values = np.asarray(values)
     return values, documents
 
-# creates and fits the model to be used with identification of authors
-# inputs 2x numpy arrays of trainig data
-
-
+#creates and fits the model to be used with identification of authors
+#inputs 2x numpy arrays of trainig data
 def modelCreation(trainX, trainY):
     model = Sequential()
     model.add(Dense(15, input_dim=len(trainX[0]), activation='selu'))
@@ -52,8 +49,7 @@ def modelCreation(trainX, trainY):
     return model
 
 
-# prepares data and splits it into train and test data for both x (values)
-# and y(expected result)
+#prepares data and splits it into train and test data for both x (values) and y(expected result)
 def dataPreperation(notDoc, data):
     np.random.seed(int(time.time()))
     d = np.empty((0, len(data[0][0]) + 1))
@@ -84,8 +80,7 @@ def dataPreperation(notDoc, data):
     return trainX, trainY, testX, testY
 
 
-# Main method that performs the tests and returns the numerical values as
-# results
+# Main method that performs the tests and returns the numerical values as results
 def runModelTests(tests, data, documents):
     results = []
     num_cores = multiprocessing.cpu_count()
@@ -101,8 +96,6 @@ def runModelTests(tests, data, documents):
     return results
 
 # returns a final prediction based on the results (legitimacy of author)
-
-
 def predictResult(results):
     results.sort(key=lambda x: x[1])
     diff = results[-1][1] - results[-2][1]
@@ -117,8 +110,6 @@ def predictResult(results):
         return "All Documents Are written by the Same Author"
 
 # *NOT IN USE* - solves for the minimum chunk size required, testing resulted in this being less consistent than the distribution described in accompanying paper
-
-
 def preRun(documents, folder):
     stored = []
     num_cores = multiprocessing.cpu_count()
@@ -133,8 +124,6 @@ def preRun(documents, folder):
     return 250 + stored.index(np.max(stored)) * 50
 
 # *NOT IN USE* - Runs relevant data preperation and creates a new model. This model is then tests and the max difference is returned
-
-
 def runWordNumTest(data, documents, num):
     results = []
     med = []
@@ -148,10 +137,7 @@ def runWordNumTest(data, documents, num):
     maxs.append(np.max(val))
     return ((np.max(val) - np.min(val)))
 
-# Main Simulation, Preps a new set of data, makes a new model and returns
-# the values of the results for prediction
-
-
+# Main Simulation, Preps a new set of data, makes a new model and returns the values of the results for prediction
 def runSimulation(data, documents, num):
     results = []
     med = []
@@ -172,7 +158,6 @@ def runSimulation(data, documents, num):
 # 1. access document and setup lists for results
 # 2. Run the tests for i number of times as per the first loop (in this case 20)
 # 3. takes the results and returns the predcition of authorship
-
 if __name__ == "__main__":
     a = time.time()
     rTot = []

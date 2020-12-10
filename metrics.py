@@ -24,8 +24,6 @@ def getNumWords(data):
     return newData, wordCount
 
 # calculates average setence length
-
-
 def avgSentenceLength(data):
     sTotal = 0
     sNum = 0
@@ -43,8 +41,6 @@ def avgSentenceLength(data):
         return 0
 
 # calculates percentate of quotes
-
-
 def quotePercentage(data, wordCount):
     qLen = 0.0
     for word in data:
@@ -59,7 +55,7 @@ def quotePercentage(data, wordCount):
     return qLen / wordCount
 
 
-# returns the number of each unique word in a  nx2 list
+#returns the number of each unique word in a  nx2 list
 def wordCounts(data):
     wCount = {}
     wCountOrdered = []
@@ -93,8 +89,6 @@ def zipfs(data):
     return r2, r2Check, x, y
 
 # calcultes yules numbers (refer to paper for futher explanation)
-
-
 def yulesNumbers(data, numWords):
     cMax = data[0][1]
     s2 = 0
@@ -120,8 +114,6 @@ def pCount(data):
     return puncCount / len(data)
 
 # calcuates percentage of contractions
-
-
 def contractionCount(data):
     cCount = 0
     for word in data:
@@ -131,9 +123,7 @@ def contractionCount(data):
     return cCount / len(data)
 
 
-# Main Method, Creates dataset for training and testing for each document,
-# returns a nx9 numpy array of numerical values (refer to paper for
-# explanation & rational for each value)
+# Main Method, Creates dataset for training and testing for each document, returns a nx9 numpy array of numerical values (refer to paper for explanation & rational for each value)
 def csvCreation(wordLim, files, folder):
     # wordLim = 250
     ret = []
